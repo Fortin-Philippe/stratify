@@ -1,0 +1,33 @@
+<head>
+    <title>Stratify</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+
+<body>
+     <header>
+        <nav>
+
+            <ul>
+            <li>
+                <a href="">
+                    <h1>Stratify</h1>
+                </a>
+            </li>
+                {% if session['nom'] %}
+                <li><a href="">Modifier votre compte</a></li>
+                <li><a href="">Se deconnecter</a></li>
+                {% else %}
+                <li><a href="">Connection</a></li>
+                <li><a href="">Créer compte</a></li>
+                {% endif %}
+                <li><a href="">Nos coach</a></li>
+            </ul>
+
+
+        </nav>
+    </header>
+</body>
