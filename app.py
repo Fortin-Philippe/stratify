@@ -53,13 +53,6 @@ def login():
 
     return render_template("login.html")
 
-# --- Fake login pour tests ---
-@app.route("/fake_login/<int:user_id>")
-def fake_login(user_id):
-    session["user_id"] = user_id
-    flash(f"Connecté en tant qu'utilisateur {user_id}", "success")
-    return redirect(url_for("profile"))
-
 # --- Déconnexion ---
 @app.route("/logout")
 def logout():
