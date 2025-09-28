@@ -1,5 +1,14 @@
-<main>
-    <Head>
-        En construction...
-    </Head>
-</main>
+{% extends "base.html" %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block content %}
+<h1>Bienvenue!</h1>
+{% if session.get("user_id") %}
+    <p>Connecté en tant qu'utilisateur {{ session.get("user_id") }}</p>
+    <a class="btn btn-primary" href="{{ url_for('profile') }}">Voir mon profil</a>
+{% else %}
+    <p>Tu n'es pas connecté.</p>
+    <a class="btn btn-primary" href="{{ url_for('login') }}">Se connecter</a>
+{% endif %}
+{% endblock %}
