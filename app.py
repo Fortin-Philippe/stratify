@@ -27,31 +27,6 @@ def get_db_connection():
 def accueil():
     return render_template("accueil.html")
 
-# --- Page login ---
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute(
-            "SELECT * FROM Utilisateur WHERE courriel=%s AND mdp=%s",
-            (email, password)
-        )
-        user = cursor.fetchone()
-        conn.close()
-
-        if user:
-            session["user_id"] = user["id"]
-            flash("Connecté avec succès ✅", "success")
-            return redirect(url_for("profile"))
-        else:
-            flash("Email ou mot de passe incorrect", "danger")
-            return redirect(url_for("login"))
-
-    return render_template("login.html")
 
 # --- Déconnexion ---
 @app.route("/logout")
