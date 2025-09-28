@@ -3,3 +3,5 @@ styles.css.map
 .env
 .vscode
 .git
+/venv
+/db
