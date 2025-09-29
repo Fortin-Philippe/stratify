@@ -1,10 +1,43 @@
-from pymongo import MongoClient
+"""
+Connexion à la BD
+"""
+import os
+import types
+import contextlib
+import mysql.connector
+from dotenv import load_dotenv
 
-MONGO_URI = "mongodb+srv://phfor002_db_user:YjTbyYIKddYhyHj7@bd-stratify.nhgylm6.mongodb.net/?retryWrites=true&w=majority&appName=BD-Stratify"
+load_dotenv()
 
-client = MongoClient(MONGO_URI)
-db = client["Stratify"]
-utilisateurs = db["utilisateurs"]
+@contextlib.contextmanager
+def creer_connexion():
+    """Pour créer une connexion à la BD"""
+    conn = mysql.connector.connect(
+        user=os.getenv('BD_UTILISATEUR'),
+        password=os.getenv('BD_MDP'),
+        host=os.getenv('BD_SERVEUR'),
+        database=os.getenv('BD_NOM_SCHEMA'),
+        raise_on_warnings=True
+    )
 
-def ajouter_utilisateur(utilisateur):
-    return utilisateurs.insert_one(utilisateur)
+    conn.get_curseur = types.MethodType(get_curseur, conn)
+
+    try:
+        yield conn
+    except Exception:
+        conn.rollback()
+        raise
+    else:
+        conn.commit()
+    finally:
+        conn.close()
+
+
+@contextlib.contextmanager
+def get_curseur(self):
+    """Permet d'avoir les enregistrements dans un dictionnaire"""
+    curseur = self.cursor(dictionary=True, buffered=True)
+    try:
+        yield curseur
+    finally:
+        curseur.close()
