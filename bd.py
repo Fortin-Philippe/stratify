@@ -41,3 +41,14 @@ def get_curseur(self):
         yield curseur
     finally:
         curseur.close()
+
+def ajout_utilisateur(utilisateur):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                """INSERT INTO utilisateurs (nom_utilisateur, courriel, mdp, description, est_coach)
+                VALUES(%(nom_utilisateur)s, %(courriel)s,%(mdp)s,%(description)s,%(est_coach)s)""",
+                utilisateur
+
+                )
+        return curseur.lastrowid

@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for
-from bd import ajouter_utilisateur
+from bd import ajout_utilisateur
 
 app = Flask(__name__)
 
@@ -24,11 +24,11 @@ def form_utilisateur():
             "est_coach": est_coach
         }
 
-        ajouter_utilisateur(utilisateur)
+        ajout_utilisateur(utilisateur)
 
         return redirect(url_for('home'))
     else:
-         return render_template("form-utilisateur.html")
+         return render_template("form-utilisateur.jinja")
 
 if __name__ == "__main__":
     app.run(debug=True)
