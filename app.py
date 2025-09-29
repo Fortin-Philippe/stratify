@@ -17,7 +17,7 @@ def form_utilisateur():
         est_coach = bool(request.form.get('est_coach'))
 
         utilisateur = {
-            "nom_utilisateur": nom_utilisateur,
+            "user_name": nom_utilisateur,
             "courriel": courriel,
             "mdp": mdp,
             "description": description,
