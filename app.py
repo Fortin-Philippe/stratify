@@ -25,7 +25,7 @@ def get_db_connection():
 # -------- ROUTES --------
 @app.route("/")
 def accueil():
-    return render_template("accueil.html")
+    return render_template("accueil.jinja")
 
 
 # --- Déconnexion ---
@@ -48,7 +48,7 @@ def profile():
     user = cursor.fetchone()
     conn.close()
 
-    return render_template("profile.html", user=user)
+    return render_template("profile.jinja", user=user)
 
 # --- Modifier profil ---
 @app.route("/edit_profile", methods=["GET", "POST"])
@@ -89,7 +89,7 @@ def edit_profile():
         return redirect(url_for("profile"))
 
     conn.close()
-    return render_template("edit_profile.html", user=user)
+    return render_template("edit_profile.jinja", user=user)
 
 # --- Lancement ---
 if __name__ == "__main__":
