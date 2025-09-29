@@ -1,0 +1,21 @@
+{% extends "base.jinja" %}
+
+{%block content%}
+<div>
+    <form method="post" action="" novalidate>
+        <div> <label for="nom" class="form-label">Nom :</label>
+            <input type="text" class="form-control" id="nom" name="nom" required>
+        </div>
+
+        <div> <label for="courriel" class="form-label">Courriel :</label>
+            <input type="text" class="form-control" id="courriel" name="courriel" required>
+        </div>
+
+        <div> <label for="mdp" class="form-label">Mots de passe :</label>
+            <input type="text" class="form-control" id="mdp" name="mdp" required>
+        </div>
+    </form>>
+
+
+</div>
+{%endblock%}

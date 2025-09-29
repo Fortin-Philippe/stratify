@@ -1,11 +1,13 @@
 from flask import Flask, render_template, redirect, request, url_for
 from bd import ajouter_utilisateur
+from acceuil import bp as acceuil_bp
 
 app = Flask(__name__)
 
+app.register_blueprint(acceuil_bp)
 @app.route('/')
 def home():
-        return render_template("accueil.html")
+        return render_template("accueil.jinja")
 
 @app.route('/creer-utilisateur', methods=['GET', 'POST'])
 def form_utilisateur():
