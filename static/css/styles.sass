@@ -1,0 +1,155 @@
+@import "bootstrap"
+$green-main:        rgb(0, 200, 83)
+$green-dark:        rgb(0, 150, 36)
+$green-light:       rgb(105, 240, 174)
+$white:             rgb(255, 255, 255)
+$black-deep:        rgb(18, 18, 18)
+$gray-dark:         rgb(46, 46, 46)
+$gray-light:        rgb(204, 204, 204)
+$red-accent:        rgb(255, 23, 68)
+$yellow-energy:     rgb(255, 235, 59)
+$blue-electric:     rgb(0, 176, 255)
+
+// Nouvelle couleur pour les cartes
+$green-success:     rgb(232, 245, 233)  // Vert très clair, apaisant
+
+
+body
+  background-color: darken($green-dark, 8%)
+
+
+header
+  background-color: $green-dark
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1)
+  position: sticky
+  padding: 1rem 2rem
+
+  nav
+    display: flex
+    justify-content: space-between
+    align-items: center
+    margin: auto
+    
+    ul
+      list-style: none
+      margin: 0
+      padding: 0
+      display: flex
+      align-items: center
+      gap: 2rem
+      
+      a 
+        text-decoration: none
+        color: $black-deep
+        font-weight: 500
+        font-size: 1rem
+        transition: all 0.3s ease
+        padding: 0.5rem 1rem
+        border-radius: 5px
+
+        &:hover 
+          color: $green-main
+          background-color: rgba($green-main, 0.1)
+
+  h1 
+    margin: 0
+    font-size: 1.8rem
+    font-weight: 700
+    color: $green-light
+    letter-spacing: 1px
+    
+    a 
+      color: $green-main
+      text-decoration: none
+      transition: color 0.3s ease
+
+      &:hover 
+        color: $green-light
+
+.titre
+  font-family: 'Roboto', 'Arial', sans-serif
+  font-size: 2.2em
+  font-weight: 700
+  color: $green-light
+  text-align: center
+  margin: 30px 0 20px 0
+  text-transform: uppercase
+  letter-spacing: 2px
+
+.card-container
+  display: flex
+  gap: 20px
+  flex-wrap: wrap
+  margin: 20px 0
+  justify-content: center
+
+.card
+  flex: 1 1 200px
+  max-width: 350px
+  min-width: 200px
+  background: linear-gradient(135deg, $green-success 0%, rgba($green-light, 0.3) 100%)
+  padding: 20px 20px 0 20px
+  border: 2px solid rgba($green-main, 0.3)
+  border-radius: 12px
+  box-shadow: 0 4px 12px rgba($green-dark, 0.15)
+  transition: all 0.3s ease-in-out
+  display: flex
+  flex-direction: column
+  text-align: center
+  text-decoration: none 
+  height: 280px
+  overflow: hidden
+  position: relative
+
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    height: 3px
+    background: linear-gradient(90deg, transparent, $green-main, transparent)
+    opacity: 0
+    transition: opacity 0.3s ease
+
+  &:hover
+    transform: translateY(-6px)
+    text-decoration: none
+    box-shadow: 0 8px 24px rgba($green-main, 0.25)
+    border-color: $green-main
+
+    &::before
+      opacity: 1
+
+  &.selected
+    border: 3px solid $green-main
+    box-shadow: 0 0 25px rgba($green-main, 0.5)
+    background: linear-gradient(135deg, rgba($green-light, 0.4) 0%, $green-success 100%)
+
+  h3
+    margin: 0
+    padding: 0 0 15px 0
+    height: 70px
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-shrink: 0
+    font-family: 'Roboto', 'Arial', sans-serif
+    font-size: 1.3em
+    font-weight: 600
+    color: $green-dark
+    letter-spacing: 0.5px
+
+  .card-img
+    width: 100%
+    height: 190px
+    object-fit: cover
+    border-radius: 8px 8px 0 0
+    display: block
+    flex-shrink: 0
+    border: 2px solid rgba($green-main, 0.2)
+    transition: all 0.3s ease
+
+  &:hover .card-img
+    border-color: $green-main
+    filter: brightness(1.05)
