@@ -1,28 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, session, flash
-import mysql.connector
 import os
+from bd import creer_connexion
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
-
-
-
-# MySQL
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "ProjetWeb"
-}
 
 UPLOAD_FOLDER = "static/uploads"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-def get_db_connection():
-    return mysql.connector.connect(**db_config)
-
-# -------- ROUTES --------
+# -------- ROUTE DE BASE --------
 @app.route("/")
 def accueil():
     return render_template("accueil.jinja")
@@ -42,11 +29,10 @@ def profile():
         flash("Tu dois être connecté.", "danger")
         return redirect(url_for("login"))
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Utilisateur WHERE id=%s", (session["user_id"],))
-    user = cursor.fetchone()
-    conn.close()
+    with creer_connexion() as conn:
+        with conn.get_curseur() as cursor:
+            cursor.execute("SELECT * FROM Utilisateur WHERE id=%s", (session["user_id"],))
+            user = cursor.fetchone()
 
     return render_template("profile.jinja", user=user)
 
@@ -57,40 +43,33 @@ def edit_profile():
         flash("Tu dois être connecté.", "danger")
         return redirect(url_for("login"))
 
-    conn = get_db_connection()
-    cursor = conn.cursor(dictionary=True)
-    cursor.execute("SELECT * FROM Utilisateur WHERE id=%s", (session["user_id"],))
-    user = cursor.fetchone()
+    with creer_connexion() as conn:
+        with conn.get_curseur() as cursor:
+            cursor.execute("SELECT * FROM Utilisateur WHERE id=%s", (session["user_id"],))
+            user = cursor.fetchone()
 
-    if request.method == "POST":
-        username = request.form["username"]
-        description = request.form["description"]
-        lstJeux = request.form["lstJeux"]
+            if request.method == "POST":
+                username = request.form["username"]
+                description = request.form["description"]
+                lstJeux = request.form["lstJeux"]
 
-        # Gestion image
-        image_file = user["image"]
-        if "image" in request.files:
-            file = request.files["image"]
-            if file and file.filename != "":
-                filename = file.filename
-                image_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
-                file.save(image_path)
-                image_file = f"static/uploads/{filename}"
+                image_file = user["image"]
+                if "image" in request.files:
+                    file = request.files["image"]
+                    if file and file.filename != "":
+                        filename = file.filename
+                        image_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+                        file.save(image_path)
+                        image_file = f"static/uploads/{filename}"
 
-        cursor.execute("""
-            UPDATE Utilisateur
-            SET user_name=%s, description=%s, lstJeux=%s, image=%s
-            WHERE id=%s
-        """, (username, description, lstJeux, image_file, session["user_id"]))
-        conn.commit()
-        conn.close()
+                cursor.execute("""
+                    UPDATE Utilisateur
+                    SET user_name=%s, description=%s, lstJeux=%s, image=%s
+                    WHERE id=%s
+                """, (username, description, lstJeux, image_file, session["user_id"]))
 
-        flash("Profil mis à jour avec succès ✅", "success")
-        return redirect(url_for("profile"))
+    flash("Profil mis à jour avec succès ✅", "success")
+    return redirect(url_for("profile"))
 
-    conn.close()
-    return render_template("edit_profile.jinja", user=user)
-
-# --- Lancement ---
 if __name__ == "__main__":
     app.run(debug=True)
