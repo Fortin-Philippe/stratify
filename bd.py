@@ -4,6 +4,7 @@ import contextlib
 import mysql.connector
 from dotenv import load_dotenv
 
+
 load_dotenv(".env")
 
 @contextlib.contextmanager
@@ -39,11 +40,51 @@ def ajouter_utilisateur(utilisateur):
         with conn.get_curseur() as curseur:
             curseur.execute(
                 """INSERT INTO utilisateur
-                   (nom_utilisateur, courriel, mdp, description, est_coach, est_connecte)
-                   VALUES (%(nom_utilisateur)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(est_connecte)s)""",
+
+                   (user_name, courriel, mdp, description, estCoach, lstJeux, image)
+                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(lstJeux)s, %(image)s)""",
+
                 utilisateur
             )
             return curseur.lastrowid
+
+def connecter_utilisateur(courriel, mdp):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp = %(mdp)s",
+                {"courriel": courriel, "mdp": mdp}
+            )
+            return curseur.fetchone()
+
+
+def get_utilisateur_par_id(user_id):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE id = %(id)s",
+                {"id": user_id}
+            )
+            return curseur.fetchone()
+
+def get_utilisateur_par_username(user_name):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE user_name = %(user_name)s",
+                {"user_name": user_name}
+            )
+            return curseur.fetchone()
+
+
+def update_utilisateur(user_id, data):
+    colonnes = ", ".join(f"{k} = %({k})s" for k in data.keys())
+    data["id"] = user_id
+    requete = f"UPDATE utilisateur SET {colonnes} WHERE id = %(id)s"
+
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(requete, data)
 
 def obtenir_discussions(jeu, niveau):
     """Récupère toutes les discussions pour un jeu et niveau donnés"""
@@ -114,14 +155,4 @@ def ajouter_message(message):
             )
             return curseur.lastrowid
 
-def connecter_utilisateur(courriel, mdp):
-    with creer_connexion() as conn:
-        with conn.get_curseur() as curseur:
-            curseur.execute(
-                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp =%(mdp)s",
-                {
-                    "courriel" : courriel,
-                    "mdp" : mdp
-                })
-            utilisateur = curseur.fetchone()
-            return utilisateur
+
