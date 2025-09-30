@@ -133,8 +133,10 @@ def profile_modif():
         flash("Utilisateur introuvable.", "danger")
         return redirect(url_for("accueil.choisir_jeu"))
 
-    lstJeux = user.get('lstJeux', [])
-    if isinstance(lstJeux, str):
+    lstJeux = user.get('lstJeux')
+    if not lstJeux:
+        lstJeux = []
+    elif isinstance(lstJeux, str):
         lstJeux = lstJeux.split(',')
     elif isinstance(lstJeux, set):
         lstJeux = list(lstJeux)
