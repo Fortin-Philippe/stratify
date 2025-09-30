@@ -4,34 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
 </head>
 
 <body>
      <header >
-     
+
         <nav>
-        
+
             <h1><a href="">Stratify</a></h1>
-       
+
 
             <ul>
             <li>
-                
+
             </li>
-                {% if session['nom'] %}
+                {% if session['est_connecte'] %}
                 <li><a href="">Modifier votre compte</a></li>
                 <li><a href="">Se deconnecter</a></li>
                 {% else %}
-                <li><a href="">Connection</a></li>
-                <li><a href="{{url_for('form_utilisateur')}}">Créer un utilisateur</a></li>
+                <li><a href="{{url_for('compte.connexion')}}">Connection</a></li>
+                <li><a href="{{url_for('compte.form_utilisateur')}}">Créer un utilisateur</a></li>
                 {% endif %}
                 <li><a href="">Nos coach</a></li>
             </ul>
 
 
         </nav>
-      
+
     </header>
        <body>
         <div >
