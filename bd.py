@@ -70,6 +70,15 @@ def get_utilisateur_par_id(user_id):
             )
             return curseur.fetchone()
 
+def get_utilisateur_par_username(user_name):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE user_name = %(user_name)s",
+                {"user_name": user_name}
+            )
+            return curseur.fetchone()
+
 
 def update_utilisateur(user_id, data):
     colonnes = ", ".join(f"{k} = %({k})s" for k in data.keys())

@@ -5,14 +5,14 @@
 {% block content %}
 <div class="container mt-4 p-4" style="background-color: rgba(15, 44, 27, 0.2); border-radius: 12px;">
     <h1 class="mb-4 text-center" style="color: rgb(255, 255, 255);">Modifier Profil</h1>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST">
         <div class="mb-3">
             <label class="form-label" style="color: rgb(105,240,174);">Nom</label>
             <input class="form-control" type="text" name="user_name" value="{{ user.user_name }}">
         </div>
 
         <div class="mb-3">
-            <label class="form-label"style="color: rgb(105,240,174);">Description</label>
+            <label class="form-label" style="color: rgb(105,240,174);">Description</label>
             <textarea class="form-control" name="description">{{ user.description }}</textarea>
         </div>
 
@@ -41,9 +41,16 @@
 
         <div class="mb-3">
             <label class="form-label" style="color: rgb(105,240,174);">Avatar</label>
-            <input class="form-control" type="file" name="image">
+            <select class="form-select" name="image">
+                <option value="">-- Choisir une image --</option>
+                {% for fichier in images_profiles %}
+                    <option value="{{ fichier }}" {% if user.image == fichier %}selected{% endif %}>
+                        {{ fichier.split('/')[-1] }}
+                    </option>
+                {% endfor %}
+            </select>
             {% if user.image %}
-                <img src="{{ url_for('static', filename=user.image.split('static/')[-1]) }}"
+                <img src="{{ url_for('static', filename=user.image) }}" 
                      alt="Avatar" class="img-thumbnail mt-2" width="120">
             {% endif %}
         </div>

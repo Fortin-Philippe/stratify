@@ -107,6 +107,7 @@ def profile():
 
     return render_template('profile.jinja', utilisateur=utilisateur)
 
+
 @bp_compte.route("/profile/modifier", methods=["GET", "POST"])
 def profile_modif():
     if "user_id" not in session:
@@ -125,26 +126,26 @@ def profile_modif():
         lstJeux = list(lstJeux)
     user['lstJeux'] = lstJeux
 
+    dossier_images = os.path.join(os.path.dirname(__file__), "static", "img", "profiles")
+    images_profiles = [f"img/profiles/{f}" for f in os.listdir(dossier_images) if f.endswith(".webp")]
+
     if request.method == "POST":
         user_name = request.form.get("user_name", user["user_name"]).strip()
         description = request.form.get("description", user["description"]).strip()
-        lstJeux_modif = request.form.getlist("lstJeux")  
+        lstJeux_modif = request.form.getlist("lstJeux")
         est_coach = 1 if request.form.get("est_coach") else 0
         mdp = request.form.get("mdp", None)
+        image_path = request.form.get("image", user.get("image"))
 
-        image_path = user.get("image")
-        if "image" in request.files:
-            file = request.files["image"]
-            if file and file.filename != "":
-                filename = secure_filename(f"user{session['user_id']}_{file.filename}")
-                filepath = os.path.join(UPLOAD_FOLDER, filename)
-                file.save(filepath)
-                image_path = f"uploads/{filename}"
+        utilisateur_exist = bd.get_utilisateur_par_username(user_name)
+        if utilisateur_exist and utilisateur_exist["id"] != user["id"]:
+            flash(f"Le nom d'utilisateur '{user_name}' est déjà pris.", "danger")
+            return render_template("profile_modif.jinja", user=user, images_profiles=images_profiles)
 
         update_data = {
             "user_name": user_name,
             "description": description,
-            "lstJeux": ",".join(lstJeux_modif),  
+            "lstJeux": ",".join(lstJeux_modif),
             "estCoach": est_coach,
             "image": image_path
         }
@@ -163,7 +164,7 @@ def profile_modif():
         flash("Profil mis à jour ✅", "success")
         return redirect(url_for("compte.profile"))
 
-    return render_template("profile_modif.jinja", user=user)
+    return render_template("profile_modif.jinja", user=user, images_profiles=images_profiles)
 
 
 @bp_compte.route('/deconnexion')
