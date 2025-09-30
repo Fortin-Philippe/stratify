@@ -3,11 +3,22 @@
 {% block title %}Profil{% endblock %}
 
 {% block content %}
-<h1>Profil de {{ user.user_name }}</h1>
-<p><strong>Description :</strong> {{ user.description }}</p>
-<p><strong>Jeux :</strong> {{ user.lstJeux }}</p>
-{% if user.image %}
-    <img src="{{ url_for('static', filename=user.image.split('static/')[-1]) }}" alt="Avatar" class="img-thumbnail" width="150">
-{% endif %}
-<a class="btn btn-warning mt-3" href="{{ url_for('profile_modif') }}">Modifier le profil</a>
+<div class="container mx-auto mt-5 p-4 rounded" 
+     style="max-width: 600px; background-color: rgb(232, 245, 233);">
+    
+    {% if utilisateur.image %}
+        <div class="text-center mb-3">
+            <img src="{{ url_for('static', filename=utilisateur.image) }}" 
+                 alt="Avatar" class="rounded-circle"
+                 style="width: 150px; height: 150px; object-fit: cover; border: 3px solid rgb(0, 200, 83);">
+        </div>
+    {% endif %}
+
+    <h1 class="titre text-center mb-3">{{ utilisateur.user_name }}</h1>
+    <p><strong>Description :</strong> {{ utilisateur.description or "Aucune description" }}</p>
+    <p><strong>Jeux :</strong> {{ utilisateur.lstJeux or "Non renseigné" }}</p>
+    <p><strong>Êtes-vous un Coach? :</strong> {% if utilisateur.estCoach %}Oui{% else %}Non{% endif %}</p>
+
+    <a class="btn btn-warning mt-3" href="{{ url_for('compte.profile_modif') }}">Modifier le profil</a>
+</div>
 {% endblock %}

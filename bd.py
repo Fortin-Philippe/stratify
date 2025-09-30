@@ -53,3 +53,34 @@ def ajouter_utilisateur(utilisateur):
                 utilisateur
             )
             return curseur.lastrowid
+        
+def connecter_utilisateur(courriel, mdp):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp =%(mdp)s",
+                {
+                    "courriel" : courriel,
+                    "mdp" : mdp
+                })
+            utilisateur = curseur.fetchone()
+            return utilisateur
+        
+def get_utilisateur_par_id(user_id):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE id = %(id)s",
+                {"id": user_id}
+            )
+            return curseur.fetchone()
+        
+def update_utilisateur(user_id, data):
+
+    colonnes = ", ".join(f"{k} = %({k})s" for k in data.keys())
+    data["id"] = user_id  
+    requete = f"UPDATE utilisateur SET {colonnes} WHERE id = %(id)s"
+
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(requete, data)

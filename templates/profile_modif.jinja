@@ -3,24 +3,55 @@
 {% block title %}Modifier Profil{% endblock %}
 
 {% block content %}
-<h1>Modifier Profil</h1>
-<form method="POST" enctype="multipart/form-data">
-    <div class="mb-3">
-        <label class="form-label">Nom</label>
-        <input class="form-control" type="text" name="username" value="{{ user.user_name }}">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Description</label>
-        <textarea class="form-control" name="description">{{ user.description }}</textarea>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Jeux</label>
-        <input class="form-control" type="text" name="lstJeux" value="{{ user.lstJeux }}">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Avatar</label>
-        <input class="form-control" type="file" name="image">
-    </div>
-    <button class="btn btn-success" type="submit">Enregistrer</button>
-</form>
+<div class="container mx-auto mt-5 p-4 rounded" 
+     style="max-width: 600px; background-color: rgb(232, 245, 233);">
+    
+    <h2 class="titre text-center mb-4">Modifier Profil</h2>
+
+    {% if user.image %}
+        <div class="text-center mb-4">
+            <img src="{{ url_for('static', filename=user.image) }}" 
+                 class="rounded-circle" alt="Avatar"
+                 style="width: 120px; height: 120px; object-fit: cover; border: 3px solid rgb(0, 200, 83);">
+        </div>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label class="form-label">Nom</label>
+            <input class="form-control" type="text" name="user_name" value="{{ user.user_name }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" name="description">{{ user.description }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Jeux</label>
+            <input class="form-control" type="text" name="lstJeux" value="{{ user.lstJeux }}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Mot de passe (laisser vide pour ne pas changer)</label>
+            <input class="form-control" type="password" name="mdp">
+        </div>
+
+        <div class="mb-3 form-check">
+            <input class="form-check-input" type="checkbox" name="est_coach" id="est_coach"
+                   {% if user.estCoach %}checked{% endif %}>
+            <label class="form-check-label" for="est_coach">Être un coach</label>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Avatar</label>
+            <input class="form-control" type="file" name="image">
+        </div>
+
+        <div class="d-flex justify-content-between mt-4">
+            <a href="{{ url_for('compte.profile') }}" class="btn btn-secondary">Annuler</a>
+            <button class="btn btn-success" type="submit">Enregistrer</button>
+        </div>
+    </form>
+</div>
 {% endblock %}
