@@ -1,0 +1,40 @@
+{% extends "base.jinja" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header">
+                    <h4>Connexion</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{{ url_for('compte.connexion') }}" novalidate>
+                        <div class="mb-3">
+                            <label for="courriel" class="form-label">Courriel*</label>
+                            <input type="email" class="form-control" id="courriel" name="courriel" required>
+                            {% if erreurs.courriel %}
+                            <div class="text-danger">{{ erreurs.courriel }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="mdp" class="form-label">Mot de passe*</label>
+                            <input type="password" class="form-control" id="mdp" name="mdp" required>
+                        </div>
+                        {% if erreurs.connexion %}
+                        <div class="text-danger">{{ erreurs.connexion }}</div>
+                        {% endif %}
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Se connecter</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    Pas encore inscrit ? <a href="{{ url_for('compte.form_utilisateur') }}">Créer un compte</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
