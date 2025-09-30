@@ -569,3 +569,180 @@ header
     background: rgba($white, 0.15)
     border-color: rgba($white, 0.5)
 
+// ========== PAGE DISCUSSION ==========
+
+.discussion-main
+  background: rgba($white, 0.05)
+  border: 2px solid rgba($green-main, 0.3)
+  border-radius: 15px
+  padding: 30px
+  margin: 30px 0
+
+.discussion-header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  margin-bottom: 25px
+  padding-bottom: 20px
+  border-bottom: 2px solid rgba($green-main, 0.3)
+  flex-wrap: wrap
+  gap: 15px
+
+  h1
+    color: $green-light
+    font-size: 2em
+    margin: 0
+    flex: 1
+
+.discussion-post, .message-post
+  background: rgba($white, 0.03)
+  border: 2px solid rgba($green-main, 0.2)
+  border-radius: 12px
+  padding: 20px
+  margin-bottom: 15px
+
+.main-post
+  background: rgba($green-main, 0.05)
+  border-color: rgba($green-main, 0.4)
+
+.post-author
+  display: flex
+  align-items: center
+  gap: 15px
+  margin-bottom: 15px
+  padding-bottom: 15px
+  border-bottom: 2px solid rgba($green-main, 0.2)
+
+  .avatar-placeholder
+    width: 50px
+    height: 50px
+    border-radius: 50%
+    background: $green-main
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 1.5em
+    font-weight: bold
+    color: $white
+    flex-shrink: 0
+
+  .author-info
+    display: flex
+    flex-direction: column
+    gap: 5px
+
+    strong
+      color: $white
+      font-size: 1.1em
+
+    small
+      color: rgba($white, 0.6)
+      font-size: 0.9em
+
+.post-content
+  color: rgba($white, 0.9)
+  line-height: 1.7
+  font-size: 1.05em
+  white-space: pre-wrap
+  word-wrap: break-word
+
+.post-stats
+  margin-top: 15px
+  padding-top: 15px
+  border-top: 2px solid rgba($green-main, 0.2)
+  color: rgba($white, 0.6)
+  font-size: 0.95em
+
+// Messages section
+.messages-section
+  margin: 40px 0
+
+  h2
+    color: $green-light
+    font-size: 1.5em
+    margin-bottom: 20px
+    padding-bottom: 15px
+    border-bottom: 2px solid rgba($green-main, 0.3)
+
+.no-messages
+  text-align: center
+  padding: 40px 20px
+  background: rgba($white, 0.03)
+  border: 2px dashed rgba($green-main, 0.3)
+  border-radius: 12px
+  color: rgba($white, 0.7)
+
+  p
+    margin: 0
+    font-size: 1.1em
+
+// Formulaire de réponse
+.reply-section
+  background: rgba($white, 0.05)
+  border: 2px solid rgba($green-main, 0.3)
+  border-radius: 15px
+  padding: 30px
+  margin: 40px 0
+
+  h3
+    color: $green-light
+    font-size: 1.3em
+    margin: 0 0 25px 0
+    padding-bottom: 15px
+    border-bottom: 2px solid rgba($green-main, 0.3)
+
+.reply-form
+  .form-group
+    margin-bottom: 20px
+
+    label
+      display: block
+      margin-bottom: 10px
+      color: $green-light
+      font-weight: 600
+
+    input, textarea
+      width: 100%
+      padding: 12px 15px
+      border: 2px solid rgba($green-main, 0.3)
+      border-radius: 8px
+      font-size: 1em
+      background: rgba($white, 0.05)
+      color: $white
+      transition: all 0.3s
+      font-family: inherit
+
+      &:focus
+        outline: none
+        border-color: $green-main
+        background: rgba($white, 0.1)
+        box-shadow: 0 0 10px rgba($green-main, 0.2)
+
+      &::placeholder
+        color: rgba($white, 0.5)
+
+    textarea
+      resize: vertical
+      min-height: 150px
+      line-height: 1.6
+
+  .btn
+    margin-top: 10px
+
+// Responsive
+@media (max-width: 768px)
+  .discussion-header
+    flex-direction: column
+    align-items: flex-start
+
+  .discussion-main, .reply-section
+    padding: 20px
+
+  .post-author
+    flex-direction: column
+    align-items: flex-start
+    text-align: left
+
+    .avatar-placeholder
+      align-self: flex-start
+
