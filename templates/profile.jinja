@@ -16,7 +16,7 @@
 
     <h1 class="titre text-center mb-3">{{ utilisateur.user_name }}</h1>
     <p><strong>Description :</strong> {{ utilisateur.description or "Aucune description" }}</p>
-    <p><strong>Jeux :</strong> {{ utilisateur.lstJeux or "Non renseigné" }}</p>
+    {# <p><strong>Jeux :</strong> {{ utilisateur.lstJeux or "Non renseigné" }}</p> #}
     <p><strong>Êtes-vous un Coach? :</strong> {% if utilisateur.est_coach %}Oui{% else %}Non{% endif %}</p>
 
 
