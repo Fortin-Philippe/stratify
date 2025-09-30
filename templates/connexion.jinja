@@ -5,7 +5,6 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
 
-
                     <form method="post" action="{{ url_for('compte.connexion') }}" novalidate>
                         <div class="mb-3">
                             <label for="courriel" class="form-label">Courriel*</label>
@@ -26,6 +25,7 @@
                             <button type="submit" class="btn btn-primary">Se connecter</button>
                         </div>
                     </form>
+
 
                 <div class="card-footer text-center">
                     Pas encore inscrit ? <a href="{{ url_for('compte.form_utilisateur') }}">Créer un compte</a>

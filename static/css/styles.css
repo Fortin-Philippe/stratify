@@ -433,6 +433,7 @@ legend + * {
   height: auto;
 }
 
+
 /* rtl:raw:
 [type="tel"],
 [type="url"],
@@ -449,7 +450,9 @@ legend + * {
   padding: 0;
 }
 
+
 ::-webkit-file-upload-button {
+
   font: inherit;
   -webkit-appearance: button;
 }
@@ -11267,4 +11270,5 @@ header h1 a:hover {
 .card:hover .card-img {
   border-color: rgb(0, 200, 83);
   filter: brightness(1.05);
+
 }/*# sourceMappingURL=style.css.map */

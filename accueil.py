@@ -156,4 +156,8 @@ def reinitialiser():
     response = make_response(redirect(url_for('accueil.choisir_jeu')))
     response.set_cookie('jeu_selectionne', '', max_age=0)
     response.set_cookie('niveau_selectionne', '', max_age=0)
+
     return response
+
+
+

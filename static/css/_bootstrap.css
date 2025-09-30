@@ -428,7 +428,6 @@ legend + * {
   height: auto;
 }
 
-
 /* rtl:raw:
 [type="tel"],
 [type="url"],
@@ -449,8 +448,6 @@ legend + * {
   font: inherit;
   -webkit-appearance: button;
 }
-
-
 
 output {
   display: inline-block;
@@ -2258,6 +2255,7 @@ textarea.form-control-lg {
   -moz-appearance: none;
   appearance: none;
   -webkit-print-color-adjust: exact;
+
   print-color-adjust: exact;
 }
 .form-check-input[type=checkbox] {

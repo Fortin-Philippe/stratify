@@ -1,5 +1,6 @@
 import re
 import hashlib
+
 import os
 from werkzeug.utils import secure_filename
 from flask import Blueprint, render_template, request, redirect, url_for, session, flash
@@ -8,17 +9,22 @@ import bd
 UPLOAD_FOLDER = os.path.join(os.path.dirname(__file__), "static", "img", "profiles")
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 bp_compte = Blueprint('compte', __name__)
 
 @bp_compte.route('/creer-utilisateur', methods=['GET', 'POST'])
 def form_utilisateur():
+
     erreurs = {}
     if request.method == 'POST':
         user_name = request.form['user_name'].strip()
+
+
         courriel = request.form['courriel'].strip()
         mdp = request.form['mdp'].strip()
         mdp_confirmation = request.form['mdp_confirmation'].strip()
         description = request.form.get('description', None)
+
         est_coach = 1 if request.form.get('est_coach') else 0
         est_connecte = 0
 
@@ -36,10 +42,12 @@ def form_utilisateur():
 
         utilisateur = {
             "user_name": user_name,
+
             "courriel": courriel,
             "mdp": hacher_mdp(mdp),
             "description": description,
             "est_coach": est_coach,
+
             "est_connecte": est_connecte,
             "lstJeux": [] 
         }
@@ -68,7 +76,7 @@ def connexion():
         else:
             utilisateur = bd.connecter_utilisateur(courriel, hacher_mdp(mdp))
             if utilisateur:
-                session.permanent = True
+
                 session['user_id'] = utilisateur['id']
                 session['user_name'] = utilisateur['user_name']
                 session['est_coach'] = utilisateur['estCoach']
@@ -79,13 +87,13 @@ def connexion():
                 elif isinstance(lstJeux, set):
                     lstJeux = list(lstJeux)
                 session['lstJeux'] = lstJeux
-
                 session['est_connecte'] = 1
                 return redirect('/')
             else:
                 erreurs['connexion'] = "Le courriel ou le mot de passe est invalide."
 
     return render_template('connexion.jinja', erreurs=erreurs)
+
 
 @bp_compte.route('/profile')
 def profile():
@@ -175,3 +183,4 @@ def deconnexion():
 
 def hacher_mdp(mdp):
     return hashlib.sha512(mdp.encode()).hexdigest()
+
