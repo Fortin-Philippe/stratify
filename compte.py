@@ -133,16 +133,7 @@ def profile_modif():
         flash("Utilisateur introuvable.", "danger")
         return redirect(url_for("accueil.choisir_jeu"))
 
-<<<<<<< Updated upstream
-    lstJeux = user.get('lstJeux')
-    if lstJeux is None:
-        lstJeux = []
-    elif isinstance(lstJeux, str):
-        lstJeux = lstJeux.split(',')
-    elif isinstance(lstJeux, set):
-        lstJeux = list(lstJeux)
-    user['lstJeux'] = lstJeux
-=======
+
     # lstJeux = user.get('lstJeux')
     # if not lstJeux:
     #     lstJeux = []
@@ -151,7 +142,6 @@ def profile_modif():
     # elif isinstance(lstJeux, set):
     #     lstJeux = list(lstJeux)
     # user['lstJeux'] = lstJeux
->>>>>>> Stashed changes
 
     dossier_images = os.path.join(os.path.dirname(__file__), "static", "img", "profiles")
     images_profiles = [f"img/profiles/{f}" for f in os.listdir(dossier_images) if f.endswith(".webp")]
