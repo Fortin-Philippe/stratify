@@ -26,8 +26,8 @@
             {% set jeux_possibles = ["League of Legends", "Valorant", "CS2", "Rocket League"] %}
             {% for jeu in jeux_possibles %}
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" name="lstJeux" value="{{ jeu }}"
-                        {% if jeu in user.lstJeux %} checked {% endif %}>
+                    <input type="checkbox" name="lstJeux" value="{{ jeu }}"
+                        {% if user.lstJeux and jeu in user.lstJeux %} checked {% endif %}>
                     <label class="form-check-label" style="color: rgb(105,240,174);">{{ jeu }}</label>
                 </div>
             {% endfor %}

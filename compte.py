@@ -134,7 +134,7 @@ def profile_modif():
         return redirect(url_for("accueil.choisir_jeu"))
 
     lstJeux = user.get('lstJeux')
-    if not lstJeux:
+    if lstJeux is None:
         lstJeux = []
     elif isinstance(lstJeux, str):
         lstJeux = lstJeux.split(',')
