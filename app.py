@@ -1,10 +1,15 @@
 from flask import Flask, render_template, redirect, request, url_for
 from bd import ajouter_utilisateur
-from acceuil import bp as acceuil_bp
+from accueil import bp as acceuil_bp
+from forum import forum_bp as forum_bp
 
 app = Flask(__name__)
 
+app.secret_key = "une_chaine_ultra_secrete_et_unique"
+
+
 app.register_blueprint(acceuil_bp)
+app.register_blueprint(forum_bp)
 @app.route('/')
 def home():
         return render_template("accueil.jinja")
@@ -30,7 +35,7 @@ def form_utilisateur():
 
         return redirect(url_for('home'))
     else:
-         return render_template("form-utilisateur.html")
+         return render_template("form-utilisateur.jinja")
 
 if __name__ == "__main__":
     app.run(debug=True)
