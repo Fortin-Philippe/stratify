@@ -130,27 +130,32 @@ def voir_discussion(discussion_id):
     
     if not discussion:
         flash('Discussion introuvable', 'error')
-        return redirect(url_for('forum.jinja'))
+        return redirect(url_for('forum.index'))
     
     
     bd.incrementer_vues(discussion_id)
+    
     
     if request.method == 'POST':
         contenu = request.form.get('contenu')
         auteur = request.form.get('auteur')
         
-        if contenu and auteur:
-            message_data = {
-                'contenu': contenu,
-                'auteur': auteur,
-                'discussion_id': discussion_id
-            }
-            bd.ajouter_message(message_data)
-            flash('Message posté avec succès !', 'success')
+        if not contenu or not auteur:
+            flash('Tous les champs sont requis', 'error')
             return redirect(url_for('forum.voir_discussion', discussion_id=discussion_id))
+        
+        message_data = {
+            'contenu': contenu,
+            'auteur': auteur,
+            'discussion_id': discussion_id
+        }
+        bd.ajouter_message(message_data)
+        flash('Message posté avec succès !', 'success')
+        return redirect(url_for('forum.voir_discussion', discussion_id=discussion_id))
+    
     
     messages = bd.obtenir_messages(discussion_id)
     
-    return render_template('forum.jinja',
+    return render_template('discussion.jinja',
                          discussion=discussion,
                          messages=messages)
