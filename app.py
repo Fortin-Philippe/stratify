@@ -1,3 +1,4 @@
+
 from flask import Flask, render_template, redirect, request, url_for
 from bd import ajouter_utilisateur
 from accueil import bp as acceuil_bp
@@ -5,7 +6,8 @@ from forum import forum_bp as forum_bp
 
 app = Flask(__name__)
 
-app.secret_key = "une_chaine_ultra_secrete_et_unique"
+app.secret_key = os.urandom(24)
+app.register_blueprint(bp_compte)
 
 
 app.register_blueprint(acceuil_bp)

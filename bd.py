@@ -39,12 +39,12 @@ def ajouter_utilisateur(utilisateur):
         with conn.get_curseur() as curseur:
             curseur.execute(
                 """INSERT INTO utilisateur
-                   (user_name, courriel, mdp, description, estCoach)
-                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s)""",
+                   (nom_utilisateur, courriel, mdp, description, est_coach, est_connecte)
+                   VALUES (%(nom_utilisateur)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(est_connecte)s)""",
                 utilisateur
             )
             return curseur.lastrowid
-        
+
 def obtenir_discussions(jeu, niveau):
     """Récupère toutes les discussions pour un jeu et niveau donnés"""
     with creer_connexion() as conn:
@@ -113,3 +113,15 @@ def ajouter_message(message):
                 message
             )
             return curseur.lastrowid
+
+def connecter_utilisateur(courriel, mdp):
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp =%(mdp)s",
+                {
+                    "courriel" : courriel,
+                    "mdp" : mdp
+                })
+            utilisateur = curseur.fetchone()
+            return utilisateur
