@@ -5,6 +5,7 @@ from bd import ajouter_utilisateur
 from accueil import bp as acceuil_bp
 from forum import forum_bp as forum_bp
 from compte import bp_compte
+from coach import bp_coach
 import os
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ app.secret_key = os.urandom(24)
 app.register_blueprint(bp_compte)
 app.register_blueprint(acceuil_bp)
 app.register_blueprint(forum_bp)
+app.register_blueprint(bp_coach)
 @app.route('/')
 def home():
         return render_template("accueil.jinja")

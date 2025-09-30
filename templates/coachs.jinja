@@ -1,0 +1,56 @@
+{% extends 'base.jinja' %}
+
+{% block content %}
+<div class="coachs-container">
+    
+    <div class="coachs-header">
+        <h1>Nos Coachs Disponibles</h1>
+        <p class="subtitle">Trouvez le coach parfait pour améliorer votre niveau de jeu</p>
+    </div>
+
+    
+    {% if coachs %}
+    <div class="coachs-grid">
+        {% for coach in coachs %}
+        <div class="coach-card">
+            <div class="coach-image">
+                {% if coach.image %}
+                <img src="{{ url_for('static', filename='uploads/' + coach.image) }}" alt="{{ coach.user_name }}">
+                {% else %}
+                <div class="coach-avatar-placeholder">{{ coach.user_name[0]|upper }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="coach-info">
+                <h3 class="coach-name">{{ coach.user_name }}</h3>
+                
+                <div class="coach-description">
+                    {% if coach.description %}
+                    {{ coach.description }}
+                    {% else %}
+                    <em>Aucune description disponible</em>
+                    {% endif %}
+                </div>
+                
+                <div class="coach-contact">
+                    <span class="coach-email">{{ coach.courriel }}</span>
+                </div>
+            </div>
+            
+            <div class="coach-actions">
+                <a href="mailto:{{ coach.courriel }}" class="btn btn-primary">
+                    Contacter
+                </a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="no-coachs">
+        <div class="empty-icon">👤</div>
+        <h2>Aucun coach disponible</h2>
+        <p>Il n'y a pas encore de coachs enregistrés sur la plateforme.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
