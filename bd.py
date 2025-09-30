@@ -1,6 +1,3 @@
-"""
-Connexion à la BD
-"""
 import os
 import types
 import contextlib
@@ -9,9 +6,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 @contextlib.contextmanager
 def creer_connexion():
-    """Pour créer une connexion à la BD"""
     conn = mysql.connector.connect(
         user=os.getenv('BD_UTILISATEUR'),
         password=os.getenv('BD_MDP'),
@@ -35,7 +32,6 @@ def creer_connexion():
 
 @contextlib.contextmanager
 def get_curseur(self):
-    """Permet d'avoir les enregistrements dans un dictionnaire"""
     curseur = self.cursor(dictionary=True, buffered=True)
     try:
         yield curseur
@@ -48,24 +44,23 @@ def ajouter_utilisateur(utilisateur):
         with conn.get_curseur() as curseur:
             curseur.execute(
                 """INSERT INTO utilisateur
-                   (user_name, courriel, mdp, description, estCoach)
-                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s)""",
+                   (user_name, courriel, mdp, description, estCoach, lstJeux, image)
+                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(lstJeux)s, %(image)s)""",
                 utilisateur
             )
             return curseur.lastrowid
-        
+
+
 def connecter_utilisateur(courriel, mdp):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp =%(mdp)s",
-                {
-                    "courriel" : courriel,
-                    "mdp" : mdp
-                })
-            utilisateur = curseur.fetchone()
-            return utilisateur
-        
+                "SELECT * FROM utilisateur WHERE courriel = %(courriel)s AND mdp = %(mdp)s",
+                {"courriel": courriel, "mdp": mdp}
+            )
+            return curseur.fetchone()
+
+
 def get_utilisateur_par_id(user_id):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
@@ -74,11 +69,11 @@ def get_utilisateur_par_id(user_id):
                 {"id": user_id}
             )
             return curseur.fetchone()
-        
-def update_utilisateur(user_id, data):
 
+
+def update_utilisateur(user_id, data):
     colonnes = ", ".join(f"{k} = %({k})s" for k in data.keys())
-    data["id"] = user_id  
+    data["id"] = user_id
     requete = f"UPDATE utilisateur SET {colonnes} WHERE id = %(id)s"
 
     with creer_connexion() as conn:

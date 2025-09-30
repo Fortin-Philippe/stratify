@@ -12,7 +12,7 @@ bp_compte = Blueprint('compte', __name__)
 
 @bp_compte.route('/creer-utilisateur', methods=['GET', 'POST'])
 def form_utilisateur():
-    erreurs={}
+    erreurs = {}
     if request.method == 'POST':
         user_name = request.form['user_name'].strip()
         courriel = request.form['courriel'].strip()
@@ -22,24 +22,26 @@ def form_utilisateur():
         est_coach = 1 if request.form.get('est_coach') else 0
         est_connecte = 0
 
-        if len(user_name)<4 or len(user_name)>60:
-            erreurs['user_name']= "Le nom doit contenir entre 4 et 60 caractères."
-        if  not re.match(r"[^@]+@[^@]+\.[^@]+", courriel):
-            erreurs['courriel']="Veuillez entrer un courriel valide."
+        if len(user_name) < 4 or len(user_name) > 60:
+            erreurs['user_name'] = "Le nom doit contenir entre 4 et 60 caractères."
+        if not re.match(r"[^@]+@[^@]+\.[^@]+", courriel):
+            erreurs['courriel'] = "Veuillez entrer un courriel valide."
         if len(mdp) < 3:
             erreurs['mdp'] = "Le mot de passe doit avoir au moins 3 caractères."
         if mdp != mdp_confirmation:
-            erreurs['mdp_confirmation'] ="Les mots de passe ne correspondent pas."
+            erreurs['mdp_confirmation'] = "Les mots de passe ne correspondent pas."
 
         if erreurs:
-            return render_template('form-utilisateur.jinja', erreurs =erreurs)
+            return render_template('form-utilisateur.jinja', erreurs=erreurs)
+
         utilisateur = {
             "user_name": user_name,
             "courriel": courriel,
             "mdp": hacher_mdp(mdp),
             "description": description,
             "est_coach": est_coach,
-            "est_connecte": est_connecte
+            "est_connecte": est_connecte,
+            "lstJeux": [] 
         }
 
         user_id = bd.ajouter_utilisateur(utilisateur)
@@ -47,11 +49,12 @@ def form_utilisateur():
         session['user_id'] = user_id
         session['user_name'] = utilisateur['user_name']
         session['est_coach'] = est_coach
+        session['lstJeux'] = []
         session['est_connecte'] = 1
         flash("Utilisateur créé avec succès !", "success")
         return redirect(url_for('accueil.choisir_jeu'))
-    else:
-         return render_template("form-utilisateur.jinja", erreurs = erreurs)
+
+    return render_template("form-utilisateur.jinja", erreurs=erreurs)
 
 @bp_compte.route('/connexion', methods=['GET', 'POST'])
 def connexion():
@@ -69,6 +72,14 @@ def connexion():
                 session['user_id'] = utilisateur['id']
                 session['user_name'] = utilisateur['user_name']
                 session['est_coach'] = utilisateur['estCoach']
+
+                lstJeux = utilisateur.get('lstJeux', [])
+                if isinstance(lstJeux, str):
+                    lstJeux = lstJeux.split(',')
+                elif isinstance(lstJeux, set):
+                    lstJeux = list(lstJeux)
+                session['lstJeux'] = lstJeux
+
                 session['est_connecte'] = 1
                 return redirect('/')
             else:
@@ -82,12 +93,17 @@ def profile():
         flash("Vous devez être connecté pour voir votre profil", "danger")
         return redirect(url_for('compte.connexion'))
 
-    utilisateur_id = session['user_id']
-    utilisateur = bd.get_utilisateur_par_id(utilisateur_id)
-
+    utilisateur = bd.get_utilisateur_par_id(session['user_id'])
     if not utilisateur:
         flash("Utilisateur introuvable", "danger")
         return redirect(url_for('accueil.choisir_jeu'))
+
+    lstJeux = utilisateur.get('lstJeux', [])
+    if isinstance(lstJeux, str):
+        lstJeux = lstJeux.split(',')
+    elif isinstance(lstJeux, set):
+        lstJeux = list(lstJeux)
+    utilisateur['lstJeux'] = lstJeux
 
     return render_template('profile.jinja', utilisateur=utilisateur)
 
@@ -97,12 +113,24 @@ def profile_modif():
         flash("Tu dois être connecté.", "danger")
         return redirect(url_for("compte.connexion"))
 
-    user = bd.get_utilisateur_par_id(session.get("user_id"))
+    user = bd.get_utilisateur_par_id(session["user_id"])
+    if not user:
+        flash("Utilisateur introuvable.", "danger")
+        return redirect(url_for("accueil.choisir_jeu"))
+
+    lstJeux = user.get('lstJeux', [])
+    if isinstance(lstJeux, str):
+        lstJeux = lstJeux.split(',')
+    elif isinstance(lstJeux, set):
+        lstJeux = list(lstJeux)
+    user['lstJeux'] = lstJeux
 
     if request.method == "POST":
         user_name = request.form.get("user_name", user["user_name"]).strip()
         description = request.form.get("description", user["description"]).strip()
-        lstJeux = request.form.get("lstJeux", getattr(user, "lstJeux", "")).strip()
+        lstJeux_modif = request.form.getlist("lstJeux")  
+        est_coach = 1 if request.form.get("est_coach") else 0
+        mdp = request.form.get("mdp", None)
 
         image_path = user.get("image")
         if "image" in request.files:
@@ -111,30 +139,38 @@ def profile_modif():
                 filename = secure_filename(f"user{session['user_id']}_{file.filename}")
                 filepath = os.path.join(UPLOAD_FOLDER, filename)
                 file.save(filepath)
-                image_path = f"uploads/{filename}" 
+                image_path = f"uploads/{filename}"
 
-        bd.update_utilisateur(user["id"], {
+        update_data = {
             "user_name": user_name,
             "description": description,
-            "lstJeux": lstJeux,
+            "lstJeux": ",".join(lstJeux_modif),  
+            "estCoach": est_coach,
             "image": image_path
-        })
+        }
+
+        if mdp:
+            update_data["mdp"] = hacher_mdp(mdp)
+
+        bd.update_utilisateur(user["id"], update_data)
 
         session['user_name'] = user_name
-        session['lstJeux'] = lstJeux
+        session['lstJeux'] = lstJeux_modif
+        session['est_coach'] = est_coach
         session['image'] = image_path
         session['est_connecte'] = 1
+
         flash("Profil mis à jour ✅", "success")
         return redirect(url_for("compte.profile"))
 
     return render_template("profile_modif.jinja", user=user)
 
+
 @bp_compte.route('/deconnexion')
 def deconnexion():
-    session.clear() 
+    session.clear()
     flash("Vous avez été déconnecté.", "success")
     return redirect(url_for('accueil.choisir_jeu'))
 
 def hacher_mdp(mdp):
-    """Fonction qui hache un mot de passe"""
     return hashlib.sha512(mdp.encode()).hexdigest()
