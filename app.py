@@ -1,11 +1,21 @@
+
+
 from flask import Flask, render_template, redirect, request, url_for
 from bd import ajouter_utilisateur
+from accueil import bp as acceuil_bp
+from forum import forum_bp as forum_bp
+from compte import bp_compte
+import os
 
 app = Flask(__name__)
 
+app.secret_key = os.urandom(24)
+app.register_blueprint(bp_compte)
+app.register_blueprint(acceuil_bp)
+app.register_blueprint(forum_bp)
 @app.route('/')
 def home():
-        return render_template("accueil.html")
+        return render_template("accueil.jinja")
 
 @app.route('/creer-utilisateur', methods=['GET', 'POST'])
 def form_utilisateur():
@@ -28,7 +38,7 @@ def form_utilisateur():
 
         return redirect(url_for('home'))
     else:
-         return render_template("form-utilisateur.html")
+         return render_template("form-utilisateur.jinja")
 
 if __name__ == "__main__":
     app.run(debug=True)

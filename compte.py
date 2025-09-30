@@ -51,6 +51,7 @@ def form_utilisateur():
             "image":None,
             "est_connecte": est_connecte
 
+
         }
 
         user_id = bd.ajouter_utilisateur(utilisateur)
@@ -58,6 +59,7 @@ def form_utilisateur():
         session['user_id'] = user_id
         session['user_name'] = utilisateur['user_name']
         session['est_coach'] = est_coach
+
         session['est_connecte'] = 1
         flash("Utilisateur créé avec succès !", "success")
         return redirect(url_for('accueil.choisir_jeu'))
@@ -79,7 +81,9 @@ def connexion():
 
                 session['user_id'] = utilisateur['id']
                 session['user_name'] = utilisateur['user_name']
+
                 session['est_coach'] = utilisateur['est_coach']
+
 
                 lstJeux = utilisateur.get('lstJeux', [])
                 if isinstance(lstJeux, str):
@@ -89,6 +93,7 @@ def connexion():
                 session['lstJeux'] = lstJeux
                 session['est_connecte'] = 1
                 flash("Vous êtes connecté !", "success")
+
                 return redirect('/')
             else:
                 erreurs['connexion'] = "Le courriel ou le mot de passe est invalide."

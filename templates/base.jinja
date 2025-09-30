@@ -1,17 +1,16 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-    <title>Stratify</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Stratify{% block title %}{% endblock %}</title>
     <link rel="icon" href="https://www.cegepgarneau.ca/favicon.ico">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.5.2/lux/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/styles.css">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
 </head>
-
 <body>
-
 
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
