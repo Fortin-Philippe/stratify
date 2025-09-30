@@ -40,6 +40,7 @@ def form_utilisateur():
         if erreurs:
             return render_template('form-utilisateur.jinja', erreurs=erreurs)
 
+
         utilisateur = {
             "user_name": user_name,
 
@@ -47,9 +48,10 @@ def form_utilisateur():
             "mdp": hacher_mdp(mdp),
             "description": description,
             "est_coach": est_coach,
+            "image":None,
+            "est_connecte": est_connecte
 
-            "est_connecte": est_connecte,
-            "lstJeux": [] 
+
         }
 
         user_id = bd.ajouter_utilisateur(utilisateur)
@@ -57,7 +59,7 @@ def form_utilisateur():
         session['user_id'] = user_id
         session['user_name'] = utilisateur['user_name']
         session['est_coach'] = est_coach
-        session['lstJeux'] = []
+
         session['est_connecte'] = 1
         flash("Utilisateur créé avec succès !", "success")
         return redirect(url_for('accueil.choisir_jeu'))
@@ -79,7 +81,9 @@ def connexion():
 
                 session['user_id'] = utilisateur['id']
                 session['user_name'] = utilisateur['user_name']
-                session['est_coach'] = utilisateur['estCoach']
+
+                session['est_coach'] = utilisateur['est_coach']
+
 
                 lstJeux = utilisateur.get('lstJeux', [])
                 if isinstance(lstJeux, str):
@@ -88,6 +92,8 @@ def connexion():
                     lstJeux = list(lstJeux)
                 session['lstJeux'] = lstJeux
                 session['est_connecte'] = 1
+                flash("Vous êtes connecté !", "success")
+
                 return redirect('/')
             else:
                 erreurs['connexion'] = "Le courriel ou le mot de passe est invalide."
@@ -154,7 +160,7 @@ def profile_modif():
             "user_name": user_name,
             "description": description,
             "lstJeux": ",".join(lstJeux_modif),
-            "estCoach": est_coach,
+            "est_coach": est_coach,
             "image": image_path
         }
 
