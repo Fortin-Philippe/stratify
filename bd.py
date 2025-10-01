@@ -157,3 +157,14 @@ def ajouter_message(message):
             return curseur.lastrowid
 
 
+def obtenir_coachs():
+    """Récupère tous les utilisateurs qui sont des coachs"""
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                """SELECT id, user_name, courriel, image, description, est_coach
+                   FROM utilisateur
+                   WHERE es_coach = 1
+                   ORDER BY user_name ASC"""
+            )
+            return curseur.fetchall()
