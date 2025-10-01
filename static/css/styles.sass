@@ -569,3 +569,153 @@ header
     background: rgba($white, 0.15)
     border-color: rgba($white, 0.5)
 
+// ========== PAGE COACHS ==========
+
+.coachs-container
+  max-width: 1400px
+  margin: 0 auto
+  padding: 40px 20px
+
+.coachs-header
+  text-align: center
+  margin-bottom: 40px
+  padding-bottom: 30px
+  border-bottom: 2px solid rgba($green-main, 0.3)
+
+  h1
+    color: $green-light
+    font-size: 2.5em
+    margin: 0 0 15px 0
+    font-weight: 700
+
+  .subtitle
+    color: rgba($white, 0.7)
+    font-size: 1.2em
+    margin: 0
+
+// Grille des coachs
+.coachs-grid
+  display: grid
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr))
+  gap: 30px
+  margin-top: 30px
+
+.coach-card
+  background: rgba($white, 0.05)
+  border: 2px solid rgba($green-main, 0.3)
+  border-radius: 15px
+  padding: 25px
+  transition: all 0.3s
+  display: flex
+  flex-direction: column
+  gap: 20px
+
+  &:hover
+    border-color: $green-main
+    box-shadow: 0 8px 24px rgba($green-main, 0.2)
+    transform: translateY(-5px)
+
+.coach-image
+  display: flex
+  justify-content: center
+  align-items: center
+
+  img
+    width: 120px
+    height: 120px
+    border-radius: 50%
+    object-fit: cover
+    border: 3px solid $green-main
+
+.coach-avatar-placeholder
+  width: 120px
+  height: 120px
+  border-radius: 50%
+  background: linear-gradient(135deg, $green-main, $green-dark)
+  display: flex
+  align-items: center
+  justify-content: center
+  font-size: 3em
+  font-weight: bold
+  color: $white
+  border: 3px solid $green-light
+
+.coach-info
+  flex: 1
+  text-align: center
+
+.coach-name
+  color: $green-light
+  font-size: 1.5em
+  margin: 0 0 15px 0
+  font-weight: 700
+
+.coach-description
+  color: rgba($white, 0.8)
+  line-height: 1.6
+  margin-bottom: 15px
+  min-height: 80px
+
+  em
+    color: rgba($white, 0.5)
+
+.coach-contact
+  padding: 15px
+  background: rgba($white, 0.03)
+  border-radius: 8px
+  margin-top: 15px
+
+.coach-email
+  color: rgba($white, 0.7)
+  font-size: 0.95em
+
+.coach-actions
+  padding-top: 15px
+  border-top: 2px solid rgba($green-main, 0.3)
+
+  .btn
+    width: 100%
+    text-align: center
+    padding: 12px 20px
+    border-radius: 8px
+    text-decoration: none
+    font-weight: 600
+    transition: all 0.3s
+    display: block
+
+  .btn-primary
+    background: $green-main
+    color: $white
+    border: none
+
+    &:hover
+      background: lighten($green-main, 10%)
+      transform: translateY(-2px)
+
+// Message vide
+.no-coachs
+  text-align: center
+  padding: 80px 20px
+  background: rgba($white, 0.03)
+  border: 2px dashed rgba($green-main, 0.3)
+  border-radius: 12px
+  margin: 40px 0
+
+  .empty-icon
+    font-size: 4em
+    margin-bottom: 20px
+    opacity: 0.5
+
+  h2
+    color: $green-light
+    margin-bottom: 15px
+
+  p
+    color: rgba($white, 0.7)
+    margin-bottom: 25px
+    font-size: 1.1em
+
+// Responsive
+@media (max-width: 768px)
+  .coachs-grid
+

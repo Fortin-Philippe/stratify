@@ -40,10 +40,8 @@ def ajouter_utilisateur(utilisateur):
         with conn.get_curseur() as curseur:
             curseur.execute(
                 """INSERT INTO utilisateur
-
-                   (user_name, courriel, mdp, description, estCoach, lstJeux, image)
-                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(lstJeux)s, %(image)s)""",
-
+                   (user_name, courriel, mdp, description, est_coach, image)
+                   VALUES (%(user_name)s, %(courriel)s, %(mdp)s, %(description)s, %(est_coach)s, %(image)s)""",
                 utilisateur
             )
             return curseur.lastrowid
@@ -91,7 +89,8 @@ def obtenir_discussions(jeu, niveau):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                """SELECT d.*, 
+                """SELECT d.*,
+
                    (SELECT COUNT(*) FROM messages WHERE discussion_id = d.id) as nombre_messages
                    FROM discussions d
                    WHERE jeu = %(jeu)s AND niveau = %(niveau)s
@@ -136,7 +135,9 @@ def obtenir_messages(discussion_id):
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                """SELECT * FROM messages 
+
+                """SELECT * FROM messages
+
                    WHERE discussion_id = %(discussion_id)s
                    ORDER BY date_creation ASC""",
                 {'discussion_id': discussion_id}
@@ -156,3 +157,14 @@ def ajouter_message(message):
             return curseur.lastrowid
 
 
+def obtenir_coachs():
+    """Récupère tous les utilisateurs qui sont des coachs"""
+    with creer_connexion() as conn:
+        with conn.get_curseur() as curseur:
+            curseur.execute(
+                """SELECT id, user_name, courriel, image, description, est_coach
+                   FROM utilisateur
+                   WHERE es_coach = 1
+                   ORDER BY user_name ASC"""
+            )
+            return curseur.fetchall()
