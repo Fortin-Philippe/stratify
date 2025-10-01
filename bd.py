@@ -162,9 +162,9 @@ def obtenir_coachs():
     with creer_connexion() as conn:
         with conn.get_curseur() as curseur:
             curseur.execute(
-                """SELECT id, user_name, courriel, image, description, estCoach
+                """SELECT id, user_name, courriel, image, description, est_coach
                    FROM utilisateur
-                   WHERE estCoach = 1
+                   WHERE es_coach = 1
                    ORDER BY user_name ASC"""
             )
             return curseur.fetchall()
