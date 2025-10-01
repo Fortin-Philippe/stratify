@@ -164,7 +164,7 @@ def obtenir_coachs():
             curseur.execute(
                 """SELECT id, user_name, courriel, image, description, est_coach
                    FROM utilisateur
-                   WHERE es_coach = 1
+                   WHERE est_coach = 1
                    ORDER BY user_name ASC"""
             )
             return curseur.fetchall()
