@@ -8,17 +8,19 @@
     <form method="POST">
         <div class="mb-3">
             <label class="form-label" style="color: rgb(105,240,174);">Nom</label>
-            <input class="form-control" type="text" name="user_name" value="{{ user.user_name }}">
+            <input class="form-control" type="text" name="user_name" value="{{ user.user_name }}"
+                   minlength="4" maxlength="60" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label" style="color: rgb(105,240,174);">Description</label>
-            <textarea class="form-control" name="description">{{ user.description }}</textarea>
+            <textarea class="form-control" name="description" rows="3" maxlength="300">{{ user.description }}</textarea>
+            <small class="form-text text-light">{{ user.description|length }}/300 caractères</small>
         </div>
 
         <div class="mb-3">
             <label class="form-label" style="color: rgb(105,240,174);">Mot de passe (laisser vide si inchangé)</label>
-            <input class="form-control" type="password" name="mdp">
+            <input class="form-control" type="password" name="mdp" minlength="3" maxlength="100">
         </div>
 
         {# <div class="mb-3">
@@ -44,9 +46,7 @@
                 {% endfor %}
             </select>
             {% if user.image %}
-
-                <img src="{{ url_for('static', filename=user.image) }}"
-
+                <img src="{{ url_for('static', filename=user.image) }}" 
                      alt="Avatar" class="img-thumbnail mt-2" width="120">
             {% endif %}
         </div>
